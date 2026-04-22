@@ -160,10 +160,10 @@ db.name=users_db
 db.username=root
 db.password=secret
 
-smtp.host=smtp.example.com
+smtp.host=sandbox.smtp.mailtrap.io
 smtp.port=587
-smtp.username=user@example.com
-smtp.password=secret
+smtp.username=e0c969fabbbd41
+smtp.password=f9169f7df96dab
 smtp.from.address=noreply@example.com
 smtp.from.name=Users Management
 ```

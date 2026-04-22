@@ -22,7 +22,8 @@ import lombok.Data;
 // desde fuera del dominio, rompiendo el encapsulamiento.
 @Data
 @AllArgsConstructor
-public class UserModel {
+public class
+UserModel {
 
   UserId id;
   UserName name;

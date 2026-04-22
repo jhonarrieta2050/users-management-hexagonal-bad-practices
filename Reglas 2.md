@@ -8,6 +8,7 @@ legibilidad, cohesión, diseño y expresividad.
 
 ------------------------------------------------------------------------
 
+
 # 1. Funciones pequeñas y de una sola responsabilidad
 
 Las funciones deben estar diseñadas para realizar una única tarea clara.
@@ -28,6 +29,7 @@ responsabilidades, dificultando su lectura, prueba y mantenimiento.
 ------------------------------------------------------------------------
 
 # 2. Funciones cortas
+ 
 
 Las funciones deben ser lo suficientemente pequeñas como para entenderse
 rápidamente.
