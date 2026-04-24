@@ -35,17 +35,7 @@ public final class CreateUserService implements CreateUserUseCase {
 
   @Override
   public UserModel execute(final CreateUserCommand command) {
-    // Clean Code - Regla 1: cada función debe hacer una sola cosa.
-    // Clean Code - Regla 2: las funciones deben ser cortas.
-    // Clean Code - Regla 3: un solo nivel de abstracción por función.
-    // Este método mezcla: validación de constraints, log de PII, verificación de negocio,
-    // construcción del dominio (nivel técnico bajo), persistencia, notificación y retorno.
-    // Tiene demasiadas responsabilidades y mezcla niveles de abstracción (reglas de negocio
-    // junto con detalles de formateo de strings y construcción manual de objetos de dominio).
 
-    // Clean Code - Regla 9: se usa comentario para tapar un bloque poco expresivo.
-    // La regla dice: antes de comentar, intenta mejorar nombres y extraer funciones.
-    // validar campos del command
     final Set<ConstraintViolation<CreateUserCommand>> violations = validator.validate(command);
     if (!violations.isEmpty()) {
       throw new ConstraintViolationException(violations);
@@ -65,7 +55,6 @@ public final class CreateUserService implements CreateUserUseCase {
 
     emailNotificationService.notifyUserCreated(savedUser, command.password());
 
-    // retornar el usuario guardado
     return savedUser;
   }
 }

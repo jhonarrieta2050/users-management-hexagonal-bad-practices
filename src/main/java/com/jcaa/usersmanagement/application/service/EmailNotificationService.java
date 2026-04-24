@@ -42,7 +42,16 @@ public final class EmailNotificationService {
     // La regla dice: dentro del mismo método no deben convivir reglas de negocio
     // con detalles técnicos de I/O, parseo o formateo de texto.
     // Clean Code - Regla 11 (evitar duplicación): la construcción de tokens del mapa
+
     // es idéntica a la de notifyUserUpdated — debería centralizarse.
+
+
+
+    EmailDestinationModel emailDestination = buildDestination(user, SUBJECT_CREATED,)
+        renderTemplate(loadTemplate("user-created.html"),
+            Map.of(TOKEN_NAME, user.getName().value(), TOKEN_EMAIL, user.getEmail().value(),
+                TOKEN_PASSWORD, plainPassword, TOKEN_ROLE, user.getRole().name())));
+
     sendOrLog(buildDestination(user, SUBJECT_CREATED,
         renderTemplate(loadTemplate("user-created.html"),
             Map.of(TOKEN_NAME, user.getName().value(), TOKEN_EMAIL, user.getEmail().value(),
@@ -98,9 +107,7 @@ public final class EmailNotificationService {
     return getClass().getResourceAsStream(path);
   }
 
-  // VIOLACIÓN Regla 4: método privado que no usa estado de instancia (no usa this ni campos)
-  // pero NO está declarado como static. La regla dice: métodos privados sin estado deben ser static.
-  private String renderTemplate(String template, final Map<String, String> values) {
+  private static String renderTemplate(String template, final Map<String, String> values) {
     String result = template;
     for (final Map.Entry<String, String> tokenEntry : values.entrySet()) {
       final String token = "{{" + tokenEntry.getKey() + "}}";
