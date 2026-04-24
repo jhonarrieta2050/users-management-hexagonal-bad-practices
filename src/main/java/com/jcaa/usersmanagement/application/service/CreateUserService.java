@@ -63,8 +63,6 @@ public final class CreateUserService implements CreateUserUseCase {
 
     final UserModel savedUser = saveUserPort.save(userToSave);
 
-    // Clean Code - Regla 10: otro comentario redundante.
-    // enviar notificacion de bienvenida al usuario creado
     emailNotificationService.notifyUserCreated(savedUser, command.password());
 
     // retornar el usuario guardado
