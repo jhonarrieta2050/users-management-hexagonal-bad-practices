@@ -5,6 +5,7 @@ import com.jcaa.usersmanagement.application.port.out.GetUserByEmailPort;
 import com.jcaa.usersmanagement.application.port.out.SaveUserPort;
 import com.jcaa.usersmanagement.application.service.dto.command.CreateUserCommand;
 import com.jcaa.usersmanagement.application.service.mapper.UserApplicationMapper;
+import com.jcaa.usersmanagement.application.service.mapper.UserFactory;
 import com.jcaa.usersmanagement.domain.enums.UserRole;
 import com.jcaa.usersmanagement.domain.enums.UserStatus;
 import com.jcaa.usersmanagement.domain.exception.UserAlreadyExistsException;
@@ -20,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
 import java.util.Set;
+
+import static com.jcaa.usersmanagement.application.service.mapper.UserFactory.createFromCommand;
 
 @Log
 @RequiredArgsConstructor
@@ -50,25 +53,14 @@ public final class CreateUserService implements CreateUserUseCase {
 
     log.info("Creando usuario con email=" + command.email() + ", nombre=" + command.name());
 
-    // Clean Code - Regla 10: comentario redundante — el código siguiente ya dice lo mismo.
+
     final UserEmail email = new UserEmail(command.email());
     if (getUserByEmailPort.getByEmail(email).isPresent()) {
       throw UserAlreadyExistsException.becauseEmailAlreadyExists(email.value());
     }
 
-    // Clean Code - Regla 3: aquí se mezcla lógica de negocio de alto nivel (crear usuario)
-    // con detalles de construcción de bajo nivel (new UserId, new UserName, etc.).
-    // Estos detalles deberían estar encapsulados en el mapper o en una fábrica.
-    final UserModel userToSave = new UserModel(
-        new UserId(command.id()),
-        new UserName(command.name()),
-        new UserEmail(command.email()),
-        UserPassword.fromPlainText(command.password()),
-        UserRole.fromString(command.role()),
-        UserStatus.PENDING);
+    final UserModel userToSave = createFromCommand(command);
 
-    // Clean Code - Regla 10: comentario que explica lo obvio — no aporta valor.
-    // guardar el usuario en la base de datos
     final UserModel savedUser = saveUserPort.save(userToSave);
 
     // Clean Code - Regla 10: otro comentario redundante.
