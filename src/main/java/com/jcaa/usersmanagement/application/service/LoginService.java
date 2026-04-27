@@ -30,7 +30,7 @@ public final class LoginService implements LoginUseCase {
 
     return user;
   }
-  //.
+  //..
   private UserModel findUserByEmail(final UserEmail email) {
     return getUserByEmailPort
         .getByEmail(email)
