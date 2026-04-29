@@ -7,9 +7,6 @@ public final class EmailSenderException extends DomainException {
   private static final String MESSAGE_SEND_FAILED =
       "La notificación por correo no pudo ser enviada.";
 
-  // VIOLACIÓN Regla 9 (Clean Code): constructores public en una excepción que debería usar
-  // factory methods con constructores privados para controlar cómo se instancia.
-  // Así cualquier clase puede crear excepciones con mensajes arbitrarios.
   private EmailSenderException(final String message) {
     super(message);
   }
