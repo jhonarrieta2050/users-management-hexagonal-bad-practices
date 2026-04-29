@@ -255,9 +255,12 @@ class UserControllerTest {
             "u-005", "Eve Martinez", "eve@example.com", "NewPass9!", "ADMIN", "ACTIVE");
     final UserModel updatedUser =
         buildUser("u-005", "Eve Martinez", "eve@example.com", UserRole.ADMIN, UserStatus.ACTIVE);
-    final ArgumentCaptor<UpdateUserCommand> captor =
+    final ArgumentCaptor<UpdateUserCommand> commandCaptor =
         ArgumentCaptor.forClass(UpdateUserCommand.class);
-    when(updateUserUseCase.execute(captor.capture())).thenReturn(updatedUser);
+    final ArgumentCaptor<GetUserByIdQuery> queryCaptor =
+        ArgumentCaptor.forClass(GetUserByIdQuery.class);
+    doNothing().when(updateUserUseCase).execute(commandCaptor.capture());
+    when(getUserByIdUseCase.execute(queryCaptor.capture())).thenReturn(updatedUser);
 
     // Act
     final UserResponse result = controller.updateUser(request);
@@ -265,25 +268,26 @@ class UserControllerTest {
     // Assert
     assertAll(
         "updateUser command delegation and response mapping",
-        () -> assertEquals("u-005", captor.getValue().id(), "command id must match request id"),
+        () -> assertEquals("u-005", commandCaptor.getValue().id(), "command id must match request id"),
         () ->
             assertEquals(
-                "Eve Martinez", captor.getValue().name(), "command name must match request name"),
+                "Eve Martinez", commandCaptor.getValue().name(), "command name must match request name"),
         () ->
             assertEquals(
                 "eve@example.com",
-                captor.getValue().email(),
+                commandCaptor.getValue().email(),
                 "command email must match request email"),
         () ->
             assertEquals(
                 "NewPass9!",
-                captor.getValue().password(),
+                commandCaptor.getValue().password(),
                 "command password must match request password"),
         () ->
-            assertEquals("ADMIN", captor.getValue().role(), "command role must match request role"),
+            assertEquals("ADMIN", commandCaptor.getValue().role(), "command role must match request role"),
         () ->
             assertEquals(
-                "ACTIVE", captor.getValue().status(), "command status must match request status"),
+                "ACTIVE", commandCaptor.getValue().status(), "command status must match request status"),
+        () -> assertEquals("u-005", queryCaptor.getValue().id(), "query id must match request id"),
         () ->
             assertEquals(
                 "u-005",
@@ -302,8 +306,9 @@ class UserControllerTest {
     final UpdateUserRequest request =
         new UpdateUserRequest(
             "u-999", "Ghost User", "ghost@example.com", "Pass9999!", "MEMBER", "INACTIVE");
-    when(updateUserUseCase.execute(any()))
-        .thenThrow(UserNotFoundException.becauseIdWasNotFound("u-999"));
+    doThrow(UserNotFoundException.becauseIdWasNotFound("u-999"))
+        .when(updateUserUseCase)
+        .execute(any());
 
     // Act & Assert
     assertThrows(
