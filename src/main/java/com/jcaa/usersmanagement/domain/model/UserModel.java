@@ -62,6 +62,30 @@ UserModel {
     return status == UserStatus.ACTIVE;
   }
 
+  public String getIdValue() {
+    return id.value();
+  }
+
+  public String getNameValue() {
+    return name.value();
+  }
+
+  public String getEmailValue() {
+    return email.value();
+  }
+
+  public String getPasswordValue() {
+    return password.value();
+  }
+
+  public String getRoleName() {
+    return role.name();
+  }
+
+  public String getStatusName() {
+    return status.name();
+  }
+
   // VIOLACIÓN Regla 9 (Hexagonal): método de conversión a entidad de infraestructura dentro del dominio.
   // El dominio NO debe saber nada sobre cómo se persisten sus datos.
   public UserEntity toEntity() {
