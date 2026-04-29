@@ -15,4 +15,8 @@ public enum UserRole {
     }
     throw InvalidUserRoleException.becauseValueIsInvalid(value);
   }
+
+  public boolean isAdmin() {
+    return this == ADMIN;
+  }
 }
