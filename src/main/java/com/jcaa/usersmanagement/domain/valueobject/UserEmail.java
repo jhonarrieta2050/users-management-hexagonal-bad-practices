@@ -12,10 +12,6 @@ public record UserEmail(String value) {
   public UserEmail {
     final String normalizedValue =
         Objects.requireNonNull(value, "UserEmail cannot be null").trim().toLowerCase();
-    // Clean Code - Regla 23 (minimizar conocimiento disperso):
-    // La lógica de "qué es un email válido" debe mantenerse centralizada aquí.
-    // Un cambio en las reglas de validación de email debe buscarse y sincronizarse
-    // en múltiples clases — eso es conocimiento disperso.
     validateNotEmpty(normalizedValue);
     validateFormat(normalizedValue);
     value = normalizedValue;
