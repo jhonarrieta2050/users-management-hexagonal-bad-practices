@@ -58,6 +58,10 @@ UserModel {
     return status == UserStatus.ACTIVE;
   }
 
+  public boolean isActive() {
+    return status == UserStatus.ACTIVE;
+  }
+
   // VIOLACIÓN Regla 9 (Hexagonal): método de conversión a entidad de infraestructura dentro del dominio.
   // El dominio NO debe saber nada sobre cómo se persisten sus datos.
   public UserEntity toEntity() {
